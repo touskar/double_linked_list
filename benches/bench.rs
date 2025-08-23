@@ -484,6 +484,228 @@ fn bench_memory_pool_large_scale(c: &mut Criterion) {
     group.finish();
 }
 
+fn bench_push_front_large_scaling(c: &mut Criterion) {
+    let mut group = c.benchmark_group("push_front_large_scaling");
+    
+    for size in [1000, 5000, 10000, 100000].iter() {
+        group.bench_with_input(BenchmarkId::new("Vec", size), size, |b, &size| {
+            b.iter(|| {
+                let mut vec = Vec::new();
+                for i in 0..size {
+                    vec.insert(0, i);
+                }
+                black_box(vec);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("LinkedList", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = LinkedList::new();
+                for i in 0..size {
+                    list.push_front(i);
+                }
+                black_box(list);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("DoubleLinkedList", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = DoubleRinkedList::new();
+                for i in 0..size {
+                    let _ = list.push_front(i);
+                }
+                black_box(list);
+            });
+        });
+    }
+    group.finish();
+}
+
+fn bench_pop_front_large_scaling(c: &mut Criterion) {
+    let mut group = c.benchmark_group("pop_front_large_scaling");
+    
+    for size in [1000, 5000, 10000, 100000].iter() {
+        group.bench_with_input(BenchmarkId::new("Vec", size), size, |b, &size| {
+            b.iter_with_setup(
+                || {
+                    let mut vec = Vec::new();
+                    for i in 0..size {
+                        vec.push(i);
+                    }
+                    vec
+                },
+                |mut vec| {
+                    while !vec.is_empty() {
+                        vec.remove(0);
+                    }
+                    black_box(vec);
+                }
+            );
+        });
+        
+        group.bench_with_input(BenchmarkId::new("LinkedList", size), size, |b, &size| {
+            b.iter_with_setup(
+                || {
+                    let mut list = LinkedList::new();
+                    for i in 0..size {
+                        list.push_back(i);
+                    }
+                    list
+                },
+                |mut list| {
+                    while !list.is_empty() {
+                        list.pop_front();
+                    }
+                    black_box(list);
+                }
+            );
+        });
+        
+        group.bench_with_input(BenchmarkId::new("DoubleLinkedList", size), size, |b, &size| {
+            b.iter_with_setup(
+                || {
+                    let mut list = DoubleRinkedList::new();
+                    for i in 0..size {
+                        let _ = list.push(i);
+                    }
+                    list
+                },
+                |mut list| {
+                    while !list.is_empty() {
+                        list.pop_front();
+                    }
+                    black_box(list);
+                }
+            );
+        });
+    }
+    group.finish();
+}
+
+fn bench_middle_operations_large_scaling(c: &mut Criterion) {
+    let mut group = c.benchmark_group("middle_insertions_large_scaling");
+    
+    for size in [1000, 5000, 10000, 50000].iter() {
+        group.bench_with_input(BenchmarkId::new("Vec", size), size, |b, &size| {
+            b.iter(|| {
+                let mut vec = Vec::new();
+                for i in 0..size {
+                    let pos = if vec.is_empty() { 0 } else { vec.len() / 2 };
+                    vec.insert(pos, i);
+                }
+                black_box(vec);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("DoubleLinkedList", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = DoubleRinkedList::new();
+                for i in 0..size {
+                    let pos = list.len() / 2;
+                    let _ = list.insert_at_index(pos, i);
+                }
+                black_box(list);
+            });
+        });
+    }
+    group.finish();
+}
+
+fn bench_large_elements_scaling(c: &mut Criterion) {
+    let mut group = c.benchmark_group("large_elements_512B_large_scaling");
+    
+    for size in [1000, 5000, 10000, 25000].iter() {
+        group.bench_with_input(BenchmarkId::new("Vec_push_front", size), size, |b, &size| {
+            b.iter(|| {
+                let mut vec = Vec::new();
+                for i in 0..size {
+                    vec.insert(0, HugeData::new(i as u64));
+                }
+                black_box(vec);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("DoubleLinkedList_push_front", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = DoubleRinkedList::new();
+                for i in 0..size {
+                    let _ = list.push_front(HugeData::new(i as u64));
+                }
+                black_box(list);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("Vec_middle_insert", size), size, |b, &size| {
+            b.iter(|| {
+                let mut vec = Vec::new();
+                for i in 0..size {
+                    let pos = if vec.is_empty() { 0 } else { vec.len() / 2 };
+                    vec.insert(pos, HugeData::new(i as u64));
+                }
+                black_box(vec);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("DoubleLinkedList_middle_insert", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = DoubleRinkedList::new();
+                for i in 0..size {
+                    let pos = list.len() / 2;
+                    let _ = list.insert_at_index(pos, HugeData::new(i as u64));
+                }
+                black_box(list);
+            });
+        });
+    }
+    group.finish();
+}
+
+fn bench_memory_pool_scaling(c: &mut Criterion) {
+    let mut group = c.benchmark_group("memory_pool_scaling");
+    
+    for size in [1000, 5000, 10000, 50000].iter() {
+        group.bench_with_input(BenchmarkId::new("DoubleLinkedList_no_pool", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = DoubleRinkedList::new();
+                for _cycle in 0..10 {
+                    for i in 0..size {
+                        let _ = list.push(i);
+                    }
+                    list.clear();
+                }
+                black_box(list);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("DoubleLinkedList_with_pool", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = DoubleRinkedList::with_capacity(size);
+                for _cycle in 0..10 {
+                    for i in 0..size {
+                        let _ = list.push(i);
+                    }
+                    list.clear();
+                }
+                black_box(list);
+            });
+        });
+        
+        group.bench_with_input(BenchmarkId::new("LinkedList_baseline", size), size, |b, &size| {
+            b.iter(|| {
+                let mut list = LinkedList::new();
+                for _cycle in 0..10 {
+                    for i in 0..size {
+                        list.push_back(i);
+                    }
+                    list.clear();
+                }
+                black_box(list);
+            });
+        });
+    }
+    group.finish();
+}
+
 criterion_group!(
     basic_benches,
     bench_push_front_small,
@@ -500,7 +722,12 @@ criterion_group!(
     bench_pop_front_scaling,
     bench_middle_removals,
     bench_large_elements_512b_scaling,
-    bench_memory_pool_large_scale
+    bench_memory_pool_large_scale,
+    bench_push_front_large_scaling,
+    bench_pop_front_large_scaling,
+    bench_middle_operations_large_scaling,
+    bench_large_elements_scaling,
+    bench_memory_pool_scaling
 );
 
 criterion_main!(basic_benches, scaling_benches);

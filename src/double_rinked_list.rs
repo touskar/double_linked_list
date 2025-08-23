@@ -438,10 +438,9 @@ where
     }
 
     pub fn to_vec(&self) -> Vec<T> {
-        debug_print!(self, "to_vec() called, length: {}", self.length);
         let mut result = Vec::with_capacity(self.length);
+        
         if self.length == 0 {
-            debug_print!(self, "Empty list, returning empty vector");
             return result;
         }
 
@@ -451,27 +450,29 @@ where
         };
         
         let mut count = 0;
-        debug_print!(self, "Starting iteration through list");
+        let max_iterations = self.length + 1;
         
         while let Some(node) = current {
-            let node_ref = node.borrow();
-            if node_ref.is_root {
-                debug_print!(self, "Reached root node, stopping iteration");
+            count += 1;
+            
+            if count > max_iterations {
+                eprintln!("ERREUR: Boucle infinie détectée dans DoubleRinkedList!");
                 break;
             }
-            if let Some(value) = &node_ref.value {
-                debug_print!(self, "Found value {:?} at position {}", value, count);
-                result.push(value.clone());
-                count += 1;
-                if count > self.length {
-                    debug_print!(self, "WARNING: Iteration count {} exceeds length {}, breaking to prevent infinite loop", count, self.length);
-                    break;
-                }
+            
+            let node_ref = node.borrow();
+            
+            if node_ref.is_root {
+                break;
             }
+            
+            if let Some(value) = &node_ref.value {
+                result.push(value.clone());
+            }
+            
             current = node_ref.next.as_ref().cloned();
         }
 
-        debug_print!(self, "to_vec completed, collected {} items", result.len());
         result
     }
 
@@ -808,10 +809,12 @@ where
     }
 
     pub fn clear(&mut self) {
-        while !self.is_empty() {
-            let _ = self.pop();
-        }
-
+        // Simple clear that doesn't use complex cursor operations to avoid infinite loops
+        self.length = 0;
+        let mut root_ref = self.root.borrow_mut();
+        root_ref.next = Some(self.root.clone());
+        root_ref.previous = Some(Rc::downgrade(&self.root));
+        drop(root_ref);
         self.reset_cursor();
     }
 
