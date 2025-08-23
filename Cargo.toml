@@ -1,0 +1,23 @@
+[package]
+name = "double_rinked_list"
+version = "0.1.0"
+edition = "2021"
+authors = ["Moussa ndour <touskar@github.com>"]
+description = "High-performance doubly-linked list with smart pointer support and memory pool optimization"
+license = "MIT"
+repository = "https://github.com/touskar/double_rinked_list"
+keywords = ["linked-list", "data-structure", "doubly-linked-list"]
+categories = ["data-structures"]
+
+[dependencies]
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+rand = "0.8"
+
+[[bench]]
+name = "bench"
+harness = false
+
+[profile.bench]
+debug = true
