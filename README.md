@@ -8,20 +8,20 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-double_rinked_list = "0.1.0"
+double_linked_list = "0.1.0"
 ```
 
 Or install from the command line:
 
 ```bash
-cargo add double_rinked_list
+cargo add double_linked_list
 ```
 
 ## Why Another Linked List?
 
 Vec is great for most things but terrible for frequent insertions/removals in the middle. This library gives you the best of both worlds - O(1) insertions anywhere with a cursor, plus a memory pool to reduce allocations. 
 
-Honestly, I mostly wanted to explore smart pointer mechanisms in Rust, so this was more of an intellectual exercise than trying to build something actually useful.
+Honestly, I mostly wanted to explore smart pointer(Rc, Cell, RefCell, OnceCell, LazyCell, Weak) mechanisms in Rust, so this was more of an intellectual exercise than trying to build something actually useful.
 
 ## Features
 

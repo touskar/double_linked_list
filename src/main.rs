@@ -1,4 +1,4 @@
-use double_rinked_list::DoubleRinkedList;
+use double_linked_list::DoubleRinkedList;
 
 fn debug_push_front() {
     let mut list = DoubleRinkedList::<i32>::new();

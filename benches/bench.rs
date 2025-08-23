@@ -1,5 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
-use double_rinked_list::DoubleRinkedList;
+use double_linked_list::DoubleRinkedList;
 use std::collections::LinkedList;
 
 #[derive(Clone, Debug)]

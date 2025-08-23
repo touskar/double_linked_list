@@ -1,5 +1,5 @@
-use double_rinked_list::DoubleRinkedList;
-use double_rinked_list::double_rinked_list::ListError;
+use double_linked_list::DoubleRinkedList;
+use double_linked_list::double_linked_list::ListError;
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
 

@@ -1,3 +1,3 @@
-pub mod double_rinked_list;
+pub mod double_linked_list;
 
-pub use double_rinked_list::{DoubleRinkedList, List, Cursor};
+pub use double_linked_list::{DoubleRinkedList, List, Cursor};

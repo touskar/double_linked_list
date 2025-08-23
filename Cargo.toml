@@ -1,11 +1,11 @@
 [package]
-name = "double_rinked_list"
+name = "double_linked_list"
 version = "0.1.0"
 edition = "2021"
 authors = ["Moussa ndour <touskar@github.com>"]
 description = "High-performance doubly-linked list with smart pointer support and memory pool optimization"
 license = "MIT"
-repository = "https://github.com/touskar/double_rinked_list"
+repository = "https://github.com/touskar/double_linked_list"
 keywords = ["linked-list", "data-structure", "doubly-linked-list"]
 categories = ["data-structures"]
 
