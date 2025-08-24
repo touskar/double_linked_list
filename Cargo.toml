@@ -6,7 +6,10 @@ authors = ["Moussa ndour <touskar@github.com>"]
 description = "High-performance doubly-linked list with smart pointer support and memory pool optimization"
 license = "MIT"
 repository = "https://github.com/touskar/double_linked_list"
-keywords = ["linked-list", "data-structure", "doubly-linked-list"]
+homepage = "https://github.com/touskar/double_linked_list"
+documentation = "https://docs.rs/double_linked_list"
+readme = "README.md"
+keywords = ["linked-list", "data-structure", "doubly-linked-list", "performance"]
 categories = ["data-structures"]
 
 [dependencies]
