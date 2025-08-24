@@ -2,13 +2,16 @@
 
 A Rust doubly-linked list implementation that doesn't suck. Built for real-world use with proper error handling and performance optimizations.
 
+[![Crates.io](https://img.shields.io/crates/v/double_linked_list.svg)](https://crates.io/crates/double_linked_list)
+[![Documentation](https://docs.rs/double_linked_list/badge.svg)](https://docs.rs/double_linked_list/latest/double_linked_list/double_linked_list/struct.DoubleRinkedList.html)
+
 ## Installation
 
 Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-double_linked_list = "0.1.0"
+double_linked_list = "0.1.1"
 ```
 
 Or install from the command line:
@@ -53,6 +56,10 @@ let shared_list = Arc::new(Mutex::new(DoubleLinkedList::new()));
 ```
 
 For performance comparisons and when to use this vs Vec, check out the [benchmarks](BENCHMARKS.md).
+
+## Documentation
+
+**[Full API Documentation](https://docs.rs/double_linked_list/latest/double_linked_list/double_linked_list/struct.DoubleRinkedList.html)**
 
 ## API Reference
 
