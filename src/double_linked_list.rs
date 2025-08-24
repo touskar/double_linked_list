@@ -1517,3 +1517,4 @@ where
 }
 
 pub type List<T> = DoubleRinkedList<T>;
+pub type DoubleLinkedList<T> = DoubleRinkedList<T>;
