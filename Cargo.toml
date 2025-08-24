@@ -1,6 +1,6 @@
 [package]
 name = "double_linked_list"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Moussa ndour <touskar@github.com>"]
 description = "High-performance doubly-linked list with smart pointer support and memory pool optimization"
