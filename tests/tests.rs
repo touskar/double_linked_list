@@ -126,6 +126,57 @@ mod tests {
     }
 
     #[test]
+    fn test_insert_many_at_index() {
+        let mut list: DoubleRinkedList<i32> = DoubleRinkedList::new();
+        
+        // Start with some initial values
+        list.push(1).unwrap();
+        list.push(2).unwrap();
+        list.push(5).unwrap();
+        assert_eq!(list.to_vec(), vec![1, 2, 5]);
+        
+        // Insert multiple values at index 2 (after 2, before 5)
+        let values = vec![3, 4];
+        let count = list.insert_many_at_index(2, values).unwrap();
+        assert_eq!(count, 2);
+        assert_eq!(list.to_vec(), vec![1, 2, 3, 4, 5]);
+        
+        // Insert at beginning
+        let more_values = vec![10, 11, 12];
+        let count2 = list.insert_many_at_index(0, more_values).unwrap();
+        assert_eq!(count2, 3);
+        assert_eq!(list.to_vec(), vec![10, 11, 12, 1, 2, 3, 4, 5]);
+        
+        // Insert at end
+        let end_values = vec![100, 101];
+        let count3 = list.insert_many_at_index(8, end_values).unwrap();
+        assert_eq!(count3, 2);
+        assert_eq!(list.to_vec(), vec![10, 11, 12, 1, 2, 3, 4, 5, 100, 101]);
+        
+        // Test with iterator (range)
+        let range_values = 50..53; // [50, 51, 52]
+        let count4 = list.insert_many_at_index(4, range_values).unwrap();
+        assert_eq!(count4, 3);
+        assert_eq!(list.to_vec(), vec![10, 11, 12, 1, 50, 51, 52, 2, 3, 4, 5, 100, 101]);
+        
+        // Test empty iterator
+        let empty_values: Vec<i32> = vec![];
+        let count5 = list.insert_many_at_index(5, empty_values).unwrap();
+        assert_eq!(count5, 0);
+        assert_eq!(list.len(), 13); // Should remain unchanged
+        
+        // Test out of bounds
+        let invalid_values = vec![999];
+        assert!(list.insert_many_at_index(20, invalid_values).is_err());
+        
+        // Test with single element
+        let single_value = vec![42];
+        let count6 = list.insert_many_at_index(6, single_value).unwrap();
+        assert_eq!(count6, 1);
+        assert_eq!(list.get_at_index(6).unwrap(), 42);
+    }
+
+    #[test]
     fn test_removal_operations() {
         let mut list = create_test_list();
 

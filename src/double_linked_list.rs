@@ -346,6 +346,29 @@ where
         self.insert_after_cursor(value)
     }
 
+    pub fn insert_many_at_index<I>(&mut self, index: usize, values: I) -> Result<usize>
+    where
+        I: IntoIterator<Item = T>,
+    {
+        if index > self.length {
+            return Err(ListError::IndexOutOfBounds {
+                index,
+                length: self.length
+            });
+        }
+
+        let mut current_index = index;
+        let mut inserted_count = 0;
+        
+        for value in values {
+            self.insert_at_index(current_index, value)?;
+            current_index += 1;
+            inserted_count += 1;
+        }
+
+        Ok(inserted_count)
+    }
+
     pub fn remove_at_index(&mut self, index: usize) -> Result<T> {
         if index >= self.length {
             return Err(ListError::IndexOutOfBounds {

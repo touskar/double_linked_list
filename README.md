@@ -79,6 +79,7 @@ fn pop(&mut self) -> Option<T>
 fn pop_back(&mut self) -> Option<T>
 fn pop_front(&mut self) -> Option<T>
 fn insert_at_index(&mut self, index: usize, value: T) -> Result<()>
+fn insert_many_at_index<I>(&mut self, index: usize, values: I) -> Result<usize>
 fn insert_at_begin(&mut self, value: T) -> Result<()>
 fn insert_at_end(&mut self, value: T) -> Result<()>
 fn remove_at_index(&mut self, index: usize) -> Result<T>
@@ -228,6 +229,20 @@ let sum = numbers.reduce(|acc, x| acc + x, 0);
 
 assert!(numbers.every(|x| *x > 0));
 assert!(numbers.any(|x| *x > 3));
+```
+
+### Bulk insertions
+```rust
+let mut list: DoubleLinkedList<i32> = (1..=5).collect();
+
+// Insert multiple values at once
+let values = vec![100, 200, 300];
+let inserted_count = list.insert_many_at_index(2, values)?;
+println!("Inserted {} items", inserted_count);
+
+// Works with any iterator
+let more_values = (400..=500);
+list.insert_many_at_index(0, more_values)?;
 ```
 
 ### Cursor operations (the cool part)
