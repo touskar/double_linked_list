@@ -21,6 +21,7 @@ fn debug_push_front() {
 
 fn main() {
     println!("Testing insert_many_at_index...");
+    debug_push_front();
 
     let mut list = DoubleRinkedList::<i32>::with_capacity(100);
     
@@ -43,7 +44,7 @@ fn main() {
     list.log(Some(" -> "));
     
     // Test with iterator
-    let more_values = (10..13); // [10, 11, 12]
+    let more_values = 10..13; // [10, 11, 12]
     match list.insert_many_at_index(0, more_values) {
         Ok(count) => println!("Successfully inserted {} items at beginning", count),
         Err(e) => println!("Error: {}", e),
