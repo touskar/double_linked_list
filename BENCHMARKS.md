@@ -1,170 +1,159 @@
-# Benchmarks
+# DoubleRinkedList Benchmark Results
 
-I ran some benchmarks to see where this linked list actually performs well vs Vec and std::LinkedList. Here's what I found.
+## System Information
+- Platform: macOS Darwin 24.1.0
+- Date: 2025-08-24
+- Rust: Optimized + debuginfo build
 
-Tested on Apple Silicon, release mode.
+## Executive Summary
 
-## Push Front (Small Scale)
+DoubleRinkedList demonstrates strong performance characteristics for specific use cases:
+- **O(1) push_front operations** - Competitive with LinkedList, vastly superior to Vec at scale
+- **Large element handling** - 27x faster than Vec for 512B structs at 10K elements
+- **Memory efficiency concerns** - Higher overhead than LinkedList (2-3x slower in many cases)
 
-Adding 100 elements to the front:
+## Key Performance Metrics
 
-```
-Vec:               30.6µs
-std::LinkedList:   1.2µs   (25x faster)
-DoubleLinkedList:  26.0µs  (1.2x faster)
-```
+### Push Front Operations (100K elements)
+| Structure | Time | Relative Performance |
+|-----------|------|---------------------|
+| Vec | 289.95ms | Baseline (O(n²) complexity) |
+| LinkedList | 1.37ms | 211x faster than Vec |
+| DoubleRinkedList | 3.14ms | 92x faster than Vec |
 
-Vec has to shift every element each time (O(n²) total). LinkedList just updates pointers (O(n) total).
+### Middle Insertions (50K elements)
+| Structure | Time | Notes |
+|-----------|------|-------|
+| Vec | 23.48ms | O(n) per operation |
+| DoubleRinkedList | 3.86s | 164x slower - index traversal overhead |
 
-## Middle Insertions (Small Scale)
+### Large Elements (512B, 25K elements)
+| Operation | Vec | DoubleRinkedList | Improvement |
+|-----------|-----|------------------|-------------|
+| Push Front | 2.25s | 3.21ms | **700x faster** |
+| Middle Insert | 1.08s | 968ms | 1.1x faster |
 
-Inserting 50 elements in the middle:
+## Detailed Results
 
-```
-Vec:               1.4µs
-DoubleLinkedList:  26.2µs
-```
+### Small Scale Operations (100 elements)
 
-Vec wins for small collections because of cache locality. For larger collections, the O(n) shifting cost would dominate.
+#### Push Front
+- **Vec**: 588.71ns
+- **LinkedList**: 1.16µs (1.97x slower than Vec)
+- **DoubleRinkedList**: 3.30µs (5.61x slower than Vec)
 
-## Large Elements
+*Analysis*: At small scales, Vec benefits from cache locality despite O(n) complexity.
 
-Push front with 25 × 256-byte structs:
+### Scaling Behavior
 
-```
-Vec:               4.2µs
-DoubleLinkedList:  3.5µs  (1.2x faster)
-```
+#### Push Front Scaling
+| Size | Vec | LinkedList | DoubleRinkedList | DRL vs Vec |
+|------|-----|------------|------------------|------------|
+| 1K | 20.42µs | 12.97µs | 36.53µs | 1.79x slower |
+| 5K | 471.32µs | 65.11µs | 192.41µs | 2.45x faster |
+| 10K | 1.89ms | 135.68µs | 388.87µs | 4.86x faster |
+| 100K | 289.95ms | 1.37ms | 3.14ms | **92x faster** |
 
-Vec has to physically move all that data during shifts. LinkedList just moves pointers.
+*Trend*: DoubleRinkedList advantage grows quadratically with size due to Vec's O(n²) total complexity.
 
-## Mixed Operations
+#### Pop Front Scaling
+| Size | Vec | LinkedList | DoubleRinkedList | DRL vs Vec |
+|------|-----|------------|------------------|------------|
+| 1K | 20.05µs | 7.78µs | 17.03µs | 1.18x faster |
+| 5K | 454.31µs | 38.50µs | 87.57µs | 5.19x faster |
+| 10K | 1.70ms | 77.12µs | 181.24µs | 9.38x faster |
+| 100K | 271.87ms | 784.62µs | 1.71ms | **159x faster** |
 
-Mix of push_front, pop_front, push_back, and middle_insert (50 operations):
+### Middle Operations Performance
 
-```
-Vec:               1.7µs
-std::LinkedList:   0.9µs   (1.9x faster)
-DoubleLinkedList:  3.5µs
-```
+#### Middle Insertions (Critical Performance Issue)
+| Size | Vec | DoubleRinkedList | Ratio |
+|------|-----|------------------|-------|
+| 1K | 11.09µs | 324.08µs | 29x slower |
+| 5K | 232.29µs | 18.65ms | 80x slower |
+| 10K | 913.32µs | 135.39ms | 148x slower |
+| 50K | 23.48ms | **3.86s** | **164x slower** |
 
-std::LinkedList wins, but it doesn't have efficient middle insertion like we do.
+*Critical Issue*: O(n) index traversal for each operation creates O(n²) total complexity.
 
-## Memory Pool
+### Large Element Benchmarks (512B structs)
 
-Repeated cycles of adding/removing 100 elements (10 cycles):
+#### Push Front with Large Elements
+| Size | Vec | DoubleRinkedList | Improvement |
+|------|-----|------------------|-------------|
+| 1K | 3.51ms | 122.84µs | 28.6x faster |
+| 5K | 89.31ms | 646.83µs | 138x faster |
+| 10K | 358.08ms | 1.31ms | 273x faster |
+| 25K | 2.25s | 3.21ms | **700x faster** |
 
-```
-Without pool:      45.2µs
-With pool:         28.1µs  (1.6x faster)
-```
+*Key Insight*: Memory copying dominates Vec performance with large elements.
 
-If you're doing lots of allocations, the pool helps quite a bit.
+#### Middle Insert with Large Elements
+| Size | Vec | DoubleRinkedList | Performance |
+|------|-----|------------------|-------------|
+| 1K | 1.59ms | 415.91µs | 3.8x faster |
+| 5K | 44.75ms | 23.48ms | 1.9x faster |
+| 10K | 179.19ms | 124.09ms | 1.4x faster |
+| 25K | 1.08s | 968.41ms | 1.1x faster |
 
-## Large Scale Push Front
+### Memory Pool Performance
 
-This is where things get interesting. Vec's O(n²) behavior starts to hurt:
+#### Allocation/Deallocation Cycles (10 iterations)
+| Size | No Pool | With Pool | LinkedList | Pool Benefit |
+|------|---------|-----------|------------|--------------|
+| 1K | 325.93µs | 354.52µs | 132.80µs | -8.8% (worse) |
+| 5K | 1.94ms | 2.02ms | 712.00µs | -4.1% (worse) |
+| 10K | 3.80ms | 4.00ms | 1.41ms | -5.3% (worse) |
+| 50K | 21.95ms | 22.23ms | 7.53ms | -1.3% (worse) |
 
-**1,000 elements:**
-```
-Vec:               1.2ms
-std::LinkedList:   25µs    (48x faster)
-DoubleLinkedList:  890µs   (1.3x faster)
-```
+*Finding*: Memory pool shows no benefit, possibly due to Rc overhead.
 
-**5,000 elements:**
-```
-Vec:               29.8ms
-std::LinkedList:   125µs   (238x faster)
-DoubleLinkedList:  4.2ms   (7x faster)
-```
+### Cursor Operations
 
-**10,000 elements:**
-```
-Vec:               118.6ms
-std::LinkedList:   251µs   (472x faster)
-DoubleLinkedList:  8.4ms   (14x faster)
-```
+- **DoubleRinkedList cursor insertions**: 2.38µs (20 sequential inserts)
+- **Vec equivalent**: 126.24ns (18.9x faster)
 
-**25,000 elements:**
-```
-Vec:               743ms
-std::LinkedList:   627µs   (1,185x faster)
-DoubleLinkedList:  21ms    (35x faster)
-```
+*Note*: Cursor maintains position, avoiding repeated traversals.
 
-## Large Elements (512 bytes each)
+### Mixed Operations (100 ops)
+- **Vec**: 391.39ns
+- **LinkedList**: 942.06ns (2.4x slower than Vec)
+- **DoubleRinkedList**: 3.08µs (7.9x slower than Vec)
 
-When elements are big, Vec has to physically copy all that data:
+## Performance Recommendations
 
-**500 elements:**
-```
-Vec:               8.9ms
-DoubleLinkedList:  1.2ms   (7x faster)
-```
+### Use DoubleRinkedList When:
+1. **Frequent push_front/pop_front** with >5K elements
+2. **Large elements** (>256B) with front operations
+3. **Cursor-based sequential modifications**
 
-**2,000 elements:**
-```
-Vec:               142ms
-DoubleLinkedList:  4.8ms   (30x faster)
-```
+### Avoid DoubleRinkedList When:
+1. **Random access by index** - O(n) traversal is prohibitive
+2. **Small datasets** (<1K elements) - overhead dominates
+3. **Simple push_back operations** - Vec is optimal
 
-**5,000 elements:**
-```
-Vec:               890ms
-DoubleLinkedList:  12ms    (74x faster)
-```
+### Critical Issues to Address:
+1. **Middle operations**: O(n²) complexity at scale (3.86s for 50K)
+2. **Memory pool**: No performance benefit, adds complexity
+3. **Small scale overhead**: 5.6x slower than Vec for 100 elements
 
-At 5,000 elements, Vec is moving 6.25 GB of data while we're moving 40KB of pointers.
+## Comparison Matrix
 
-## Pop Front at Scale
+| Operation | Best Choice | Second Choice | Avoid |
+|-----------|------------|---------------|-------|
+| Push Front (>10K) | LinkedList | DoubleRinkedList | Vec |
+| Push Front (<1K) | Vec | LinkedList | DoubleRinkedList |
+| Random Index Access | Vec | - | DoubleRinkedList |
+| Large Elements Front | DoubleRinkedList | LinkedList | Vec |
+| Memory Efficiency | LinkedList | Vec | DoubleRinkedList |
+| Sequential Cursor Ops | DoubleRinkedList | - | Vec |
 
-Removing all elements from the front (same O(n²) problem):
+## Conclusion
 
-**2,000 elements:**
-```
-Vec:               45.2ms
-std::LinkedList:   89µs    (508x faster)
-DoubleLinkedList:  178µs   (254x faster)
-```
+DoubleRinkedList excels in specific scenarios (large-scale front operations, large elements) but suffers from:
+- High overhead for small operations (3-5x vs LinkedList)
+- Catastrophic O(n²) performance for indexed operations at scale
+- Ineffective memory pool optimization
+- Generally 2-3x slower than std::collections::LinkedList
 
-**5,000 elements:**
-```
-Vec:               282ms
-std::LinkedList:   223µs   (1,265x faster)
-DoubleLinkedList:  445µs   (634x faster)
-```
-
-**10,000 elements:**
-```
-Vec:               1.13s
-std::LinkedList:   445µs   (2,539x faster)
-DoubleLinkedList:  890µs   (1,270x faster)
-```
-
-## When to Use This
-
-**Use DoubleLinkedList when:**
-- Lots of front insertions/removals (queues, stacks)
-- Large elements (>64 bytes) 
-- Unknown collection sizes with frequent changes
-- Need cursor-based operations
-- Doing allocation-heavy workloads (use the pool)
-
-**Use Vec when:**
-- Need random access
-- Small elements
-- Mostly appending to the end
-- Cache performance matters
-
-**Use std::LinkedList when:**
-- Only need simple front/back operations
-- Want standard library
-
-## Summary
-
-The key takeaway: this linked list really shines when you're doing operations that make Vec suffer (front insertions, large elements, lots of allocations). For everything else, Vec is probably better.
-
-The cursor system is unique and useful if you're doing sequential processing with insertions. std::LinkedList is faster for simple operations but lacks middle insertion and cursor support.
-
-Bottom line: if Vec is slow for your use case, try this. If Vec works fine, stick with it.
+The implementation needs optimization for index-based operations and memory management to be competitive as a general-purpose data structure.

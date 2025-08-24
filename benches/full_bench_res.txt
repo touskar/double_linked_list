@@ -1,0 +1,799 @@
+macbookpro@192 RinkedList %  cargo bench --bench bench
+   Compiling double_rinked_list v0.1.0 (/Users/macbookpro/RustroverProjects/RinkedList)
+warning: field `data` is never read
+ --> benches/bench.rs:7:5
+  |
+6 | struct LargeData {
+  |        --------- field in this struct
+7 |     data: [u64; 32],
+  |     ^^^^
+  |
+  = note: `LargeData` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+  = note: `#[warn(dead_code)]` on by default
+
+warning: field `data` is never read
+  --> benches/bench.rs:18:5
+   |
+17 | struct HugeData {
+   |        -------- field in this struct
+18 |     data: [u64; 64],
+   |     ^^^^
+   |
+   = note: `HugeData` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: `double_rinked_list` (bench "bench") generated 2 warnings
+    Finished `bench` profile [optimized + debuginfo] target(s) in 0.44s
+     Running benches/bench.rs (target/release/deps/bench-09cdba32428cdcc6)
+Gnuplot not found, using plotters backend
+push_front_100/Vec      time:   [586.45 ns 588.71 ns 591.13 ns]
+                        change: [-0.0556% +0.2859% +0.6308%] (p = 0.12 > 0.05)
+                        No change in performance detected.
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) low mild
+  8 (8.00%) high mild
+push_front_100/LinkedList
+                        time:   [1.1533 µs 1.1596 µs 1.1668 µs]
+                        change: [-2.3634% -1.2596% -0.0922%] (p = 0.03 < 0.05)
+                        Change within noise threshold.
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+push_front_100/DoubleRinkedList
+                        time:   [3.2557 µs 3.3006 µs 3.3452 µs]
+                        change: [-1.2056% +0.1482% +1.5397%] (p = 0.84 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+middle_insertions/Vec/100
+                        time:   [527.52 ns 528.45 ns 529.41 ns]
+                        change: [-1.0318% -0.7240% -0.4075%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+middle_insertions/DoubleRinkedList/100
+                        time:   [6.5086 µs 6.5615 µs 6.6189 µs]
+                        change: [-6.8173% -4.3110% -2.6105%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+middle_insertions/Vec/500
+                        time:   [3.6784 µs 3.7076 µs 3.7422 µs]
+                        change: [-6.4124% -5.1641% -3.9400%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+middle_insertions/DoubleRinkedList/500
+                        time:   [92.912 µs 93.366 µs 93.997 µs]
+                        change: [-5.8100% -5.0145% -3.9646%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+middle_insertions/Vec/1000
+                        time:   [11.232 µs 11.292 µs 11.374 µs]
+                        change: [+0.8090% +1.5928% +2.3841%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+middle_insertions/DoubleRinkedList/1000
+                        time:   [344.29 µs 345.06 µs 345.98 µs]
+                        change: [-4.8957% -4.4544% -4.0230%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
+large_elements_256B/Vec_push_front/50
+                        time:   [3.0649 µs 3.0725 µs 3.0804 µs]
+                        change: [-1.5529% -0.8855% -0.3685%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 7 outliers among 100 measurements (7.00%)
+  6 (6.00%) high mild
+  1 (1.00%) high severe
+large_elements_256B/DoubleRinkedList_push_front/50
+                        time:   [2.9325 µs 2.9410 µs 2.9507 µs]
+                        change: [+0.2509% +0.8301% +1.4721%] (p = 0.01 < 0.05)
+                        Change within noise threshold.
+Found 11 outliers among 100 measurements (11.00%)
+  6 (6.00%) high mild
+  5 (5.00%) high severe
+large_elements_256B/Vec_push_front/100
+                        time:   [11.154 µs 11.171 µs 11.191 µs]
+                        change: [+0.2435% +0.4877% +0.7188%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high mild
+large_elements_256B/DoubleRinkedList_push_front/100
+                        time:   [6.3257 µs 6.4427 µs 6.5919 µs]
+                        change: [+0.6022% +6.6110% +12.573%] (p = 0.02 < 0.05)
+                        Change within noise threshold.
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+large_elements_256B/Vec_push_front/200
+                        time:   [43.308 µs 43.429 µs 43.554 µs]
+                        change: [-0.6156% -0.2524% +0.1210%] (p = 0.18 > 0.05)
+                        No change in performance detected.
+Found 8 outliers among 100 measurements (8.00%)
+  7 (7.00%) high mild
+  1 (1.00%) high severe
+large_elements_256B/DoubleRinkedList_push_front/200
+                        time:   [18.570 µs 18.744 µs 18.923 µs]
+                        change: [-4.2934% -1.9423% +0.4167%] (p = 0.12 > 0.05)
+                        No change in performance detected.
+Found 13 outliers among 100 measurements (13.00%)
+  1 (1.00%) high mild
+  12 (12.00%) high severe
+
+mixed_operations/Vec    time:   [389.16 ns 391.39 ns 393.57 ns]
+                        change: [-1.7752% -1.0665% -0.3541%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+mixed_operations/LinkedList
+                        time:   [937.18 ns 942.06 ns 946.41 ns]
+                        change: [+0.4119% +0.9801% +1.5214%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+mixed_operations/DoubleRinkedList
+                        time:   [3.0463 µs 3.0774 µs 3.1097 µs]
+                        change: [+0.0229% +1.3405% +2.7144%] (p = 0.05 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+cursor_operations/DoubleRinkedList_cursor_insertions
+                        time:   [2.3567 µs 2.3804 µs 2.4055 µs]
+                        change: [-4.1274% -2.1635% -0.3886%] (p = 0.02 < 0.05)
+                        Change within noise threshold.
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+cursor_operations/Vec_equivalent
+                        time:   [125.84 ns 126.24 ns 126.66 ns]
+                        change: [-1.0670% -0.8251% -0.5809%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+
+memory_pool/DoubleRinkedList_no_pool/100
+                        time:   [33.539 µs 35.094 µs 37.378 µs]
+                        change: [-7.6133% -3.8329% +0.5473%] (p = 0.06 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+memory_pool/DoubleRinkedList_with_pool/100
+                        time:   [36.383 µs 37.222 µs 37.957 µs]
+                        change: [-32.902% -15.769% +2.0225%] (p = 0.17 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+memory_pool/LinkedList_baseline/100
+                        time:   [12.276 µs 12.410 µs 12.547 µs]
+                        change: [+3.3220% +4.3540% +5.5277%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+memory_pool/DoubleRinkedList_no_pool/500
+                        time:   [162.63 µs 163.26 µs 163.92 µs]
+                        change: [+1.9542% +2.5280% +3.1209%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+memory_pool/DoubleRinkedList_with_pool/500
+                        time:   [175.59 µs 176.27 µs 176.95 µs]
+                        change: [+1.3412% +2.0100% +2.6835%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+memory_pool/LinkedList_baseline/500
+                        time:   [60.928 µs 61.521 µs 62.156 µs]
+                        change: [-2.0902% -0.7035% +0.6257%] (p = 0.30 > 0.05)
+                        No change in performance detected.
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+memory_pool/DoubleRinkedList_no_pool/1000
+                        time:   [353.08 µs 355.14 µs 357.42 µs]
+                        change: [-1.3875% -0.6119% +0.1723%] (p = 0.14 > 0.05)
+                        No change in performance detected.
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+memory_pool/DoubleRinkedList_with_pool/1000
+                        time:   [325.77 µs 327.50 µs 329.46 µs]
+                        change: [-24.105% -17.713% -11.754%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 11 outliers among 100 measurements (11.00%)
+  3 (3.00%) high mild
+  8 (8.00%) high severe
+memory_pool/LinkedList_baseline/1000
+                        time:   [128.71 µs 129.18 µs 129.68 µs]
+                        change: [-2.0148% -1.3182% -0.6164%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+push_front_scaling/Vec/1000
+                        time:   [20.583 µs 20.629 µs 20.673 µs]
+                        change: [-0.6221% -0.2946% +0.0455%] (p = 0.07 > 0.05)
+                        No change in performance detected.
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+push_front_scaling/LinkedList/1000
+                        time:   [12.995 µs 13.075 µs 13.154 µs]
+                        change: [-1.7352% -0.8860% -0.0720%] (p = 0.04 < 0.05)
+                        Change within noise threshold.
+push_front_scaling/DoubleRinkedList/1000
+                        time:   [35.067 µs 35.716 µs 36.590 µs]
+                        change: [-7.0692% -0.6315% +6.4365%] (p = 0.87 > 0.05)
+                        No change in performance detected.
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+push_front_scaling/Vec/5000
+                        time:   [465.25 µs 468.40 µs 471.39 µs]
+                        change: [-1.6663% -1.1033% -0.5524%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 11 outliers among 100 measurements (11.00%)
+  7 (7.00%) high mild
+  4 (4.00%) high severe
+push_front_scaling/LinkedList/5000
+                        time:   [68.273 µs 68.709 µs 69.151 µs]
+                        change: [+3.0165% +3.7429% +4.4075%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+push_front_scaling/DoubleRinkedList/5000
+                        time:   [189.77 µs 199.95 µs 211.88 µs]
+                        change: [-5.3513% -2.7255% +0.4066%] (p = 0.06 > 0.05)
+                        No change in performance detected.
+Found 25 outliers among 100 measurements (25.00%)
+  12 (12.00%) low severe
+  7 (7.00%) low mild
+  6 (6.00%) high severe
+Benchmarking push_front_scaling/Vec/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.4s, enable flat sampling, or reduce sample count to 50.
+push_front_scaling/Vec/10000
+                        time:   [1.8794 ms 1.8853 ms 1.8911 ms]
+                        change: [-1.7993% -1.3705% -0.8843%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high severe
+push_front_scaling/LinkedList/10000
+                        time:   [131.06 µs 131.70 µs 132.42 µs]
+                        change: [-0.4767% +0.0959% +0.6778%] (p = 0.75 > 0.05)
+                        No change in performance detected.
+push_front_scaling/DoubleRinkedList/10000
+                        time:   [364.12 µs 366.16 µs 368.08 µs]
+                        change: [-3.1528% -2.5788% -1.9987%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) low mild
+  3 (3.00%) high mild
+
+pop_front_scaling/Vec/1000
+                        time:   [19.732 µs 19.828 µs 19.962 µs]
+                        change: [-0.0332% +0.4262% +0.9097%] (p = 0.08 > 0.05)
+                        No change in performance detected.
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+pop_front_scaling/LinkedList/1000
+                        time:   [8.1025 µs 8.1659 µs 8.2311 µs]
+                        change: [-1.4042% -0.3167% +0.7904%] (p = 0.57 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+pop_front_scaling/DoubleRinkedList/1000
+                        time:   [17.341 µs 17.434 µs 17.537 µs]
+                        change: [-0.4691% +0.2613% +1.0125%] (p = 0.51 > 0.05)
+                        No change in performance detected.
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+pop_front_scaling/Vec/5000
+                        time:   [459.34 µs 462.23 µs 465.54 µs]
+                        change: [+1.0826% +1.7011% +2.3592%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+pop_front_scaling/LinkedList/5000
+                        time:   [39.708 µs 40.201 µs 40.755 µs]
+                        change: [+0.2400% +1.2769% +2.4004%] (p = 0.02 < 0.05)
+                        Change within noise threshold.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+pop_front_scaling/DoubleRinkedList/5000
+                        time:   [87.918 µs 88.325 µs 88.728 µs]
+                        change: [+1.7372% +2.3577% +3.0015%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Benchmarking pop_front_scaling/Vec/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.1s, enable flat sampling, or reduce sample count to 50.
+pop_front_scaling/Vec/10000
+                        time:   [1.7991 ms 1.8040 ms 1.8094 ms]
+                        change: [+0.2024% +0.5463% +0.8515%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+pop_front_scaling/LinkedList/10000
+                        time:   [76.979 µs 77.764 µs 78.666 µs]
+                        change: [-5.4135% -4.1445% -2.8863%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+pop_front_scaling/DoubleRinkedList/10000
+                        time:   [174.00 µs 174.79 µs 175.67 µs]
+                        change: [-0.4580% +0.0219% +0.5393%] (p = 0.93 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+middle_removals/Vec/100 time:   [300.64 ns 301.47 ns 302.39 ns]
+                        change: [-1.0734% -0.6186% -0.1836%] (p = 0.01 < 0.05)
+                        Change within noise threshold.
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+middle_removals/DoubleRinkedList/100
+                        time:   [3.9081 µs 3.9210 µs 3.9340 µs]
+                        change: [+0.3944% +0.8933% +1.3622%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+middle_removals/Vec/500 time:   [3.8420 µs 3.8630 µs 3.8882 µs]
+                        change: [+2.7259% +3.3201% +3.9143%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+middle_removals/DoubleRinkedList/500
+                        time:   [69.573 µs 69.725 µs 69.891 µs]
+                        change: [+1.7557% +2.0877% +2.4146%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low severe
+  4 (4.00%) high mild
+middle_removals/Vec/1000
+                        time:   [14.820 µs 14.843 µs 14.868 µs]
+                        change: [-2.8116% -1.9716% -1.1710%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+middle_removals/DoubleRinkedList/1000
+                        time:   [261.26 µs 262.07 µs 262.93 µs]
+                        change: [+2.4840% +2.8791% +3.3923%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+large_elements_512B_scaling/Vec_push_front/500
+                        time:   [806.79 µs 808.99 µs 811.34 µs]
+                        change: [+0.0976% +0.6196% +1.1309%] (p = 0.02 < 0.05)
+                        Change within noise threshold.
+Found 6 outliers among 100 measurements (6.00%)
+  6 (6.00%) high mild
+large_elements_512B_scaling/DoubleRinkedList_push_front/500
+                        time:   [54.699 µs 55.660 µs 56.721 µs]
+                        change: [-9.0586% -6.9939% -4.8708%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+large_elements_512B_scaling/Vec_middle_insert/500
+                        time:   [289.35 µs 289.69 µs 290.05 µs]
+                        change: [-2.4256% -1.7131% -1.0603%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+large_elements_512B_scaling/DoubleRinkedList_middle_insert/500
+                        time:   [122.86 µs 123.24 µs 123.64 µs]
+                        change: [-1.7223% -0.7941% -0.0150%] (p = 0.07 > 0.05)
+                        No change in performance detected.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+large_elements_512B_scaling/Vec_push_front/1000
+                        time:   [3.4756 ms 3.4799 ms 3.4840 ms]
+                        change: [-1.6231% -1.2309% -0.8828%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+large_elements_512B_scaling/DoubleRinkedList_push_front/1000
+                        time:   [121.05 µs 122.26 µs 123.43 µs]
+                        change: [-6.9492% -5.4703% -3.9138%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+Benchmarking large_elements_512B_scaling/Vec_middle_insert/1000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.0s, enable flat sampling, or reduce sample count to 50.
+large_elements_512B_scaling/Vec_middle_insert/1000
+                        time:   [1.5854 ms 1.5888 ms 1.5934 ms]
+                        change: [-0.2322% -0.0144% +0.2142%] (p = 0.90 > 0.05)
+                        No change in performance detected.
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+large_elements_512B_scaling/DoubleRinkedList_middle_insert/1000
+                        time:   [416.37 µs 417.82 µs 419.40 µs]
+                        change: [-0.0915% +0.6021% +1.2825%] (p = 0.09 > 0.05)
+                        No change in performance detected.
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+large_elements_512B_scaling/Vec_push_front/2000
+                        time:   [14.143 ms 14.158 ms 14.173 ms]
+                        change: [-1.9802% -1.6733% -1.3828%] (p = 0.00 < 0.05)
+                        Performance has improved.
+large_elements_512B_scaling/DoubleRinkedList_push_front/2000
+                        time:   [242.86 µs 247.35 µs 251.85 µs]
+                        change: [+1.8681% +4.0290% +6.1849%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+large_elements_512B_scaling/Vec_middle_insert/2000
+                        time:   [6.9294 ms 6.9370 ms 6.9445 ms]
+                        change: [-0.9693% -0.8059% -0.6391%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+Benchmarking large_elements_512B_scaling/DoubleRinkedList_middle_insert/2000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.7s, enable flat sampling, or reduce sample count to 50.
+large_elements_512B_scaling/DoubleRinkedList_middle_insert/2000
+                        time:   [1.9070 ms 1.9553 ms 2.0042 ms]
+                        change: [+4.0251% +6.3418% +8.7589%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+memory_pool_large_scale/DoubleRinkedList_no_pool/5000
+                        time:   [167.35 µs 167.83 µs 168.29 µs]
+                        change: [-4.6983% -3.8774% -3.0776%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+memory_pool_large_scale/DoubleRinkedList_with_pool/5000
+                        time:   [162.37 µs 172.79 µs 188.86 µs]
+                        change: [-18.456% -4.1628% +14.287%] (p = 0.64 > 0.05)
+                        No change in performance detected.
+Found 9 outliers among 100 measurements (9.00%)
+  2 (2.00%) high mild
+  7 (7.00%) high severe
+memory_pool_large_scale/DoubleRinkedList_no_pool/10000
+                        time:   [321.91 µs 322.95 µs 323.90 µs]
+                        change: [-4.7660% -4.1391% -3.5117%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+memory_pool_large_scale/DoubleRinkedList_with_pool/10000
+                        time:   [340.65 µs 342.22 µs 344.03 µs]
+                        change: [-3.0808% -2.4217% -1.7479%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) low mild
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+push_front_large_scaling/Vec/1000
+                        time:   [20.373 µs 20.420 µs 20.488 µs]
+Found 15 outliers among 100 measurements (15.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  13 (13.00%) high severe
+push_front_large_scaling/LinkedList/1000
+                        time:   [12.897 µs 12.968 µs 13.042 µs]
+push_front_large_scaling/DoubleLinkedList/1000
+                        time:   [34.877 µs 36.531 µs 38.724 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high severe
+push_front_large_scaling/Vec/5000
+                        time:   [469.25 µs 471.32 µs 473.55 µs]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+push_front_large_scaling/LinkedList/5000
+                        time:   [64.825 µs 65.112 µs 65.428 µs]
+push_front_large_scaling/DoubleLinkedList/5000
+                        time:   [191.69 µs 192.41 µs 193.07 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) low severe
+  3 (3.00%) low mild
+  1 (1.00%) high mild
+Benchmarking push_front_large_scaling/Vec/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.4s, enable flat sampling, or reduce sample count to 50.
+push_front_large_scaling/Vec/10000
+                        time:   [1.8790 ms 1.8883 ms 1.8968 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+push_front_large_scaling/LinkedList/10000
+                        time:   [134.76 µs 135.68 µs 136.78 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+push_front_large_scaling/DoubleLinkedList/10000
+                        time:   [386.49 µs 388.87 µs 390.99 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) low mild
+Benchmarking push_front_large_scaling/Vec/100000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 28.8s, or reduce sample count to 10.
+push_front_large_scaling/Vec/100000
+                        time:   [289.31 ms 289.95 ms 290.66 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+Benchmarking push_front_large_scaling/LinkedList/100000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.9s, enable flat sampling, or reduce sample count to 50.
+push_front_large_scaling/LinkedList/100000
+                        time:   [1.3667 ms 1.3723 ms 1.3781 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+push_front_large_scaling/DoubleLinkedList/100000
+                        time:   [3.1334 ms 3.1427 ms 3.1520 ms]
+
+pop_front_large_scaling/Vec/1000
+                        time:   [19.901 µs 20.049 µs 20.217 µs]
+Found 18 outliers among 100 measurements (18.00%)
+  17 (17.00%) high mild
+  1 (1.00%) high severe
+pop_front_large_scaling/LinkedList/1000
+                        time:   [7.7396 µs 7.7821 µs 7.8273 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+pop_front_large_scaling/DoubleLinkedList/1000
+                        time:   [16.969 µs 17.030 µs 17.100 µs]
+Found 13 outliers among 100 measurements (13.00%)
+  11 (11.00%) high mild
+  2 (2.00%) high severe
+pop_front_large_scaling/Vec/5000
+                        time:   [452.33 µs 454.31 µs 456.30 µs]
+pop_front_large_scaling/LinkedList/5000
+                        time:   [38.171 µs 38.500 µs 38.827 µs]
+pop_front_large_scaling/DoubleLinkedList/5000
+                        time:   [86.996 µs 87.574 µs 88.169 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+Benchmarking pop_front_large_scaling/Vec/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.6s, enable flat sampling, or reduce sample count to 50.
+pop_front_large_scaling/Vec/10000
+                        time:   [1.6997 ms 1.7046 ms 1.7097 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+pop_front_large_scaling/LinkedList/10000
+                        time:   [76.347 µs 77.118 µs 77.925 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+pop_front_large_scaling/DoubleLinkedList/10000
+                        time:   [169.30 µs 181.24 µs 206.70 µs]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+Benchmarking pop_front_large_scaling/Vec/100000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 28.2s, or reduce sample count to 10.
+pop_front_large_scaling/Vec/100000
+                        time:   [268.50 ms 271.87 ms 276.65 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+Benchmarking pop_front_large_scaling/LinkedList/100000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.8s, enable flat sampling, or reduce sample count to 60.
+pop_front_large_scaling/LinkedList/100000
+                        time:   [776.12 µs 784.62 µs 794.07 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+pop_front_large_scaling/DoubleLinkedList/100000
+                        time:   [1.6974 ms 1.7106 ms 1.7295 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+
+middle_insertions_large_scaling/Vec/1000
+                        time:   [11.042 µs 11.091 µs 11.138 µs]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) low severe
+  6 (6.00%) low mild
+  1 (1.00%) high mild
+middle_insertions_large_scaling/DoubleLinkedList/1000
+                        time:   [323.26 µs 324.08 µs 325.05 µs]
+Found 11 outliers among 100 measurements (11.00%)
+  2 (2.00%) low severe
+  4 (4.00%) low mild
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+middle_insertions_large_scaling/Vec/5000
+                        time:   [231.48 µs 232.29 µs 233.08 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+middle_insertions_large_scaling/DoubleLinkedList/5000
+                        time:   [18.117 ms 18.653 ms 19.684 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) low mild
+  3 (3.00%) high severe
+middle_insertions_large_scaling/Vec/10000
+                        time:   [911.89 µs 913.32 µs 914.68 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+Benchmarking middle_insertions_large_scaling/DoubleLinkedList/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 13.0s, or reduce sample count to 30.
+Benchmarking middle_insertions_large_scaling/DoubleLinkedList/10000: Collecting 100 samples in estimated 13.040 s (100 iterations)
+
+
+middle_insertions_large_scaling/DoubleLinkedList/10000
+                        time:   [133.53 ms 135.39 ms 138.35 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+middle_insertions_large_scaling/Vec/50000
+                        time:   [23.417 ms 23.476 ms 23.537 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low mild
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+Benchmarking middle_insertions_large_scaling/DoubleLinkedList/50000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 373.7s, or reduce sample count to 10.
+Benchmarking middle_insertions_large_scaling/DoubleLinkedList/50000: Collecting 100 samples in estimated 373.69 s (100 iterations)
+
+
+
+
+
+
+
+
+middle_insertions_large_scaling/DoubleLinkedList/50000
+                        time:   [3.8469 s 3.8629 s 3.8792 s]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low severe
+  3 (3.00%) low mild
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+
+large_elements_512B_large_scaling/Vec_push_front/1000
+                        time:   [3.5061 ms 3.5147 ms 3.5241 ms]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+large_elements_512B_large_scaling/DoubleLinkedList_push_front/1000
+                        time:   [119.93 µs 122.84 µs 125.66 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+Benchmarking large_elements_512B_large_scaling/Vec_middle_insert/1000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.1s, enable flat sampling, or reduce sample count to 50.
+large_elements_512B_large_scaling/Vec_middle_insert/1000
+                        time:   [1.5911 ms 1.5932 ms 1.5953 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+large_elements_512B_large_scaling/DoubleLinkedList_middle_insert/1000
+                        time:   [414.41 µs 415.91 µs 417.61 µs]
+Benchmarking large_elements_512B_large_scaling/Vec_push_front/5000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.9s, or reduce sample count to 50.
+large_elements_512B_large_scaling/Vec_push_front/5000
+                        time:   [89.209 ms 89.309 ms 89.409 ms]
+large_elements_512B_large_scaling/DoubleLinkedList_push_front/5000
+                        time:   [639.46 µs 646.83 µs 653.84 µs]
+large_elements_512B_large_scaling/Vec_middle_insert/5000
+                        time:   [44.700 ms 44.751 ms 44.801 ms]
+large_elements_512B_large_scaling/DoubleLinkedList_middle_insert/5000
+                        time:   [22.843 ms 23.483 ms 24.119 ms]
+Benchmarking large_elements_512B_large_scaling/Vec_push_front/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 35.8s, or reduce sample count to 10.
+large_elements_512B_large_scaling/Vec_push_front/10000
+                        time:   [357.79 ms 358.08 ms 358.37 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+Benchmarking large_elements_512B_large_scaling/DoubleLinkedList_push_front/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.5s, enable flat sampling, or reduce sample count to 60.
+large_elements_512B_large_scaling/DoubleLinkedList_push_front/10000
+                        time:   [1.2975 ms 1.3128 ms 1.3275 ms]
+Benchmarking large_elements_512B_large_scaling/Vec_middle_insert/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 18.0s, or reduce sample count to 20.
+large_elements_512B_large_scaling/Vec_middle_insert/10000
+                        time:   [179.04 ms 179.19 ms 179.34 ms]
+Benchmarking large_elements_512B_large_scaling/DoubleLinkedList_middle_insert/10000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 12.2s, or reduce sample count to 40.
+Benchmarking large_elements_512B_large_scaling/DoubleLinkedList_middle_insert/10000: Collecting 100 samples in estimated 12.220 s (100 iterations)
+
+
+large_elements_512B_large_scaling/DoubleLinkedList_middle_insert/10000
+                        time:   [122.22 ms 124.09 ms 126.05 ms]
+Benchmarking large_elements_512B_large_scaling/Vec_push_front/25000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 226.3s, or reduce sample count to 10.
+large_elements_512B_large_scaling/Vec_push_front/25000
+                        time:   [2.2362 s 2.2517 s 2.2740 s]
+Found 21 outliers among 100 measurements (21.00%)
+  15 (15.00%) low severe
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+large_elements_512B_large_scaling/DoubleLinkedList_push_front/25000
+                        time:   [3.0986 ms 3.2069 ms 3.3950 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+Benchmarking large_elements_512B_large_scaling/Vec_middle_insert/25000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 105.3s, or reduce sample count to 10.
+Benchmarking large_elements_512B_large_scaling/Vec_middle_insert/25000: Collecting 100 samples in estimated 105.27 s (100 iterations)
+
+
+
+
+large_elements_512B_large_scaling/Vec_middle_insert/25000
+                        time:   [1.0722 s 1.0794 s 1.0873 s]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+Benchmarking large_elements_512B_large_scaling/DoubleLinkedList_middle_insert/25000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 96.6s, or reduce sample count to 10.
+large_elements_512B_large_scaling/DoubleLinkedList_middle_insert/25000
+                        time:   [964.73 ms 968.41 ms 972.65 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+Benchmarking memory_pool_scaling/DoubleLinkedList_no_pool/1000: Collecting 100 samples in estimated 6.5253 s (20k iterations)
+
+
+memory_pool_scaling/DoubleLinkedList_no_pool/1000
+                        time:   [324.17 µs 325.93 µs 327.69 µs]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+memory_pool_scaling/DoubleLinkedList_with_pool/1000
+                        time:   [350.67 µs 354.52 µs 358.81 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+memory_pool_scaling/LinkedList_baseline/1000
+                        time:   [132.17 µs 132.80 µs 133.46 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low severe
+  2 (2.00%) low mild
+  4 (4.00%) high mild
+Benchmarking memory_pool_scaling/DoubleLinkedList_no_pool/5000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.7s, enable flat sampling, or reduce sample count to 50.
+Benchmarking memory_pool_scaling/DoubleLinkedList_no_pool/5000: Collecting 100 samples in estimated 9.7313 s (5050 iterations)
+
+
+
+
+
+
+memory_pool_scaling/DoubleLinkedList_no_pool/5000
+                        time:   [1.9318 ms 1.9442 ms 1.9552 ms]
+Found 11 outliers among 100 measurements (11.00%)
+  11 (11.00%) low mild
+memory_pool_scaling/DoubleLinkedList_with_pool/5000
+                        time:   [2.0004 ms 2.0187 ms 2.0362 ms]
+memory_pool_scaling/LinkedList_baseline/5000
+                        time:   [709.59 µs 712.00 µs 714.51 µs]
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+Benchmarking memory_pool_scaling/DoubleLinkedList_no_pool/10000: Collecting 100 samples in estimated 5.0209 s (1400 iterations)
+
+
+memory_pool_scaling/DoubleLinkedList_no_pool/10000
+                        time:   [3.7728 ms 3.7997 ms 3.8268 ms]
+memory_pool_scaling/DoubleLinkedList_with_pool/10000
+                        time:   [3.9709 ms 4.0011 ms 4.0305 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) low mild
+Benchmarking memory_pool_scaling/LinkedList_baseline/10000: Warming up for 3.0000 s
+
+
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 7.3s, enable flat sampling, or reduce sample count to 50.
+memory_pool_scaling/LinkedList_baseline/10000
+                        time:   [1.4077 ms 1.4128 ms 1.4185 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+memory_pool_scaling/DoubleLinkedList_no_pool/50000
+                        time:   [21.908 ms 21.948 ms 21.989 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+Benchmarking memory_pool_scaling/DoubleLinkedList_with_pool/50000: Collecting 100 samples in estimated 6.7029 s (300 iterations)
+
+
+
+memory_pool_scaling/DoubleLinkedList_with_pool/50000
+                        time:   [22.179 ms 22.232 ms 22.289 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+memory_pool_scaling/LinkedList_baseline/50000
+                        time:   [7.4772 ms 7.5341 ms 7.5950 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+macbookpro@192 RinkedList %
